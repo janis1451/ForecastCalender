@@ -1,9 +1,34 @@
 const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  entry: "./src/index.html",
+  mode: "development",
+  entry: [__dirname + "/src", __dirname + "/src/styles/base.scss"],
   output: {
-    filename: "index.html",
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve("dist/"),
+    clean: true,
+  },
+
+  module: {
+    rules: [
+      {
+        test: /\.html$/i,
+        use: "html-loader",
+      },
+      {
+        test: /\.scss$/,
+        use: ["sass-loader"],
+      },
+    ],
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "src/index.html",
+      filename: "index.html",
+      inject: false,
+    }),
+  ],
+  resolve: {
+    extensions: [".html", ".scss"],
   },
 };
